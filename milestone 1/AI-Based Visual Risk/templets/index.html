@@ -1,0 +1,329 @@
+{% extends &quot;base.html&quot; %}
+{% block extra_css %}
+&lt;style&gt;
+/* ----- Custom styles for this page ----- */
+.hero-section {
+background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+color: white;
+padding: 4rem 0 3rem;
+margin-bottom: 3rem;
+border-radius: 0 0 40px 40px;
+}
+.hero-title {
+font-size: 3.2rem;
+font-weight: 700;
+text-shadow: 2px 2px 8px rgba(0,0,0,0.15);
+}
+.hero-subtitle {
+font-size: 1.4rem;
+opacity: 0.95;
+}
+.hero-text {
+font-size: 1.1rem;
+opacity: 0.9;
+max-width: 500px;
+}
+.badge-light-custom {
+background: rgba(255,255,255,0.2);
+color: white;
+padding: 0.4rem 1rem;
+border-radius: 30px;
+font-weight: 500;
+backdrop-filter: blur(4px);
+border: 1px solid rgba(255,255,255,0.1);
+}
+.feature-card {
+border: none;
+border-radius: 16px;
+transition: all 0.3s ease;
+height: 100%;
+}
+.feature-card:hover {
+transform: translateY(-6px);
+box-shadow: 0 12px 30px rgba(0,0,0,0.12);
+}
+.feature-icon {
+width: 70px;
+height: 70px;
+
+border-radius: 50%;
+display: inline-flex;
+align-items: center;
+justify-content: center;
+font-size: 2rem;
+color: white;
+margin-bottom: 1rem;
+}
+.step-circle {
+width: 80px;
+height: 80px;
+border-radius: 50%;
+display: inline-flex;
+align-items: center;
+justify-content: center;
+font-size: 2.2rem;
+font-weight: 700;
+color: white;
+transition: transform 0.3s;
+margin-bottom: 1rem;
+}
+.step-circle:hover {
+transform: scale(1.08);
+}
+.stat-number {
+font-size: 2.8rem;
+font-weight: 700;
+}
+.cta-section {
+background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+color: white;
+padding: 4rem 0;
+border-radius: 40px 40px 0 0;
+margin-top: 3rem;
+}
+.btn-outline-white {
+border: 2px solid white;
+color: white;
+background: transparent;
+border-radius: 50px;
+padding: 0.6rem 2rem;
+font-weight: 600;
+transition: all 0.3s;
+}
+.btn-outline-white:hover {
+background: white;
+color: #667eea;
+}
+
+.btn-primary-soft {
+background: white;
+color: #667eea;
+border: none;
+border-radius: 50px;
+padding: 0.7rem 2.5rem;
+font-weight: 600;
+transition: all 0.3s;
+}
+.btn-primary-soft:hover {
+background: #f0f0f0;
+transform: scale(1.02);
+}
+@media (max-width: 768px) {
+.hero-title { font-size: 2.2rem; }
+.hero-subtitle { font-size: 1.1rem; }
+.stat-number { font-size: 2rem; }
+}
+&lt;/style&gt;
+{% endblock %}
+{% block content %}
+&lt;!-- ===== HERO ===== --&gt;
+&lt;section class=&quot;hero-section&quot;&gt;
+&lt;div class=&quot;container&quot;&gt;
+&lt;div class=&quot;row align-items-center g-4&quot;&gt;
+&lt;div class=&quot;col-lg-6 text-lg-start text-center&quot;&gt;
+&lt;h1 class=&quot;hero-title&quot;&gt;Visual Risk and AI Intelligence&lt;/h1&gt;
+&lt;p class=&quot;hero-subtitle&quot;&gt;Your Intelligent Life Simulation &amp;amp; Decision Assistant&lt;/p&gt;
+&lt;p class=&quot;hero-text mx-lg-0 mx-auto&quot;&gt;
+Predict your future, optimise your habits, and make datadriven decisions
+with AIpowered simulations and personalised recommendations.
+&lt;/p&gt;
+&lt;div class=&quot;d-flex flex-wrap gap-3 justify-content-lg-start justify-content-center mt-4&quot;&gt;
+&lt;a href=&quot;{{ url_for(&#39;register&#39;) }}&quot; class=&quot;btn btn-primary-soft&quot;&gt;
+�� Get Started Free
+&lt;/a&gt;
+&lt;a href=&quot;#features&quot; class=&quot;btn btn-outline-white&quot;&gt;
+Learn More
+&lt;/a&gt;
+&lt;/div&gt;
+&lt;div class=&quot;mt-4 d-flex flex-wrap gap-2 justify-content-lg-start justify-content-center&quot;&gt;
+&lt;span class=&quot;badge-light-custom&quot;&gt;&lt;i class=&quot;fas fa-star text-warning&quot;&gt;&lt;/i&gt; 4.9/5&lt;/span&gt;
+&lt;span class=&quot;badge-light-custom&quot;&gt;&lt;i class=&quot;fas fa-users&quot;&gt;&lt;/i&gt; 10K+ Users&lt;/span&gt;
+&lt;span class=&quot;badge-light-custom&quot;&gt;&lt;i class=&quot;fas fa-chart-line&quot;&gt;&lt;/i&gt; 500K+
+Simulations&lt;/span&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;div class=&quot;col-lg-6 text-center d-none d-lg-block&quot;&gt;
+&lt;img src=&quot;https://img.icons8.com/fluency/400/000000/artificial-intelligence.png&quot; alt=&quot;AI&quot;
+class=&quot;img-fluid&quot; style=&quot;filter: drop-shadow(0 10px 30px rgba(0,0,0,0.2));&quot;&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/section&gt;
+&lt;!-- ===== FEATURES ===== --&gt;
+&lt;section id=&quot;features&quot; class=&quot;py-5&quot;&gt;
+&lt;div class=&quot;container&quot;&gt;
+&lt;div class=&quot;text-center mb-5&quot;&gt;
+&lt;h2 class=&quot;display-5 fw-bold&quot; style=&quot;color: #2d3748;&quot;&gt;
+Everything You Need to &lt;span style=&quot;background: linear-gradient(135deg, #667eea,
+#764ba2); -webkit-background-clip: text; -webkit-text-fill-color: transparent;&quot;&gt;Take Control&lt;/span&gt;
+&lt;/h2&gt;
+&lt;p class=&quot;text-muted&quot; style=&quot;font-size: 1.2rem;&quot;&gt;One platform to track, simulate, and
+improve every aspect of your life.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;row g-4&quot;&gt;
+&lt;!-- Feature 1 --&gt;
+&lt;div class=&quot;col-md-4&quot;&gt;
+&lt;div class=&quot;card feature-card shadow-sm p-3&quot;&gt;
+&lt;div class=&quot;card-body text-center&quot;&gt;
+&lt;div class=&quot;feature-icon&quot; style=&quot;background: linear-gradient(135deg, #667eea,
+#764ba2);&quot;&gt;
+&lt;i class=&quot;fas fa-coins&quot;&gt;&lt;/i&gt;
+&lt;/div&gt;
+&lt;h5 class=&quot;card-title fw-bold&quot;&gt;Financial Management&lt;/h5&gt;
+&lt;p class=&quot;card-text text-muted&quot;&gt;Track income, expenses, and savings. Get intelligent
+forecasts and spending insights.&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;!-- Feature 2 --&gt;
+&lt;div class=&quot;col-md-4&quot;&gt;
+&lt;div class=&quot;card feature-card shadow-sm p-3&quot;&gt;
+&lt;div class=&quot;card-body text-center&quot;&gt;
+&lt;div class=&quot;feature-icon&quot; style=&quot;background: linear-gradient(135deg, #f093fb,
+#f5576c);&quot;&gt;
+&lt;i class=&quot;fas fa-book-open&quot;&gt;&lt;/i&gt;
+&lt;/div&gt;
+&lt;h5 class=&quot;card-title fw-bold&quot;&gt;Study Intelligence&lt;/h5&gt;
+&lt;p class=&quot;card-text text-muted&quot;&gt;Analyse your study habits, predict your GPA, and get
+personalised study plans.&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;/div&gt;
+&lt;!-- Feature 3 --&gt;
+&lt;div class=&quot;col-md-4&quot;&gt;
+&lt;div class=&quot;card feature-card shadow-sm p-3&quot;&gt;
+&lt;div class=&quot;card-body text-center&quot;&gt;
+&lt;div class=&quot;feature-icon&quot; style=&quot;background: linear-gradient(135deg, #4facfe,
+#00f2fe);&quot;&gt;
+&lt;i class=&quot;fas fa-running&quot;&gt;&lt;/i&gt;
+&lt;/div&gt;
+&lt;h5 class=&quot;card-title fw-bold&quot;&gt;Fitness Tracking&lt;/h5&gt;
+&lt;p class=&quot;card-text text-muted&quot;&gt;Monitor your daily activity, burn calories, and stay on
+top of your health goals.&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;!-- Feature 4 --&gt;
+&lt;div class=&quot;col-md-4&quot;&gt;
+&lt;div class=&quot;card feature-card shadow-sm p-3&quot;&gt;
+&lt;div class=&quot;card-body text-center&quot;&gt;
+&lt;div class=&quot;feature-icon&quot; style=&quot;background: linear-gradient(135deg, #43e97b,
+#38f9d7);&quot;&gt;
+&lt;i class=&quot;fas fa-robot&quot;&gt;&lt;/i&gt;
+&lt;/div&gt;
+&lt;h5 class=&quot;card-title fw-bold&quot;&gt;AI Assistant&lt;/h5&gt;
+&lt;p class=&quot;card-text text-muted&quot;&gt;Chat with your Digital Twin – get instant, personalised
+advice on any life area.&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;!-- Feature 5 --&gt;
+&lt;div class=&quot;col-md-4&quot;&gt;
+&lt;div class=&quot;card feature-card shadow-sm p-3&quot;&gt;
+&lt;div class=&quot;card-body text-center&quot;&gt;
+&lt;div class=&quot;feature-icon&quot; style=&quot;background: linear-gradient(135deg, #fa709a,
+#fee140);&quot;&gt;
+&lt;i class=&quot;fas fa-chart-line&quot;&gt;&lt;/i&gt;
+&lt;/div&gt;
+&lt;h5 class=&quot;card-title fw-bold&quot;&gt;Future Simulation&lt;/h5&gt;
+&lt;p class=&quot;card-text text-muted&quot;&gt;Test different scenarios – see how your decisions
+today impact your tomorrow.&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;!-- Feature 6 --&gt;
+&lt;div class=&quot;col-md-4&quot;&gt;
+&lt;div class=&quot;card feature-card shadow-sm p-3&quot;&gt;
+&lt;div class=&quot;card-body text-center&quot;&gt;
+
+&lt;div class=&quot;feature-icon&quot; style=&quot;background: linear-gradient(135deg, #a18cd1,
+#fbc2eb);&quot;&gt;
+&lt;i class=&quot;fas fa-tachometer-alt&quot;&gt;&lt;/i&gt;
+&lt;/div&gt;
+&lt;h5 class=&quot;card-title fw-bold&quot;&gt;Personal Dashboard&lt;/h5&gt;
+&lt;p class=&quot;card-text text-muted&quot;&gt;All your metrics at a glance – savings, GPA, fitness,
+and goals in one place.&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/section&gt;
+&lt;!-- ===== HOW IT WORKS ===== --&gt;
+&lt;section class=&quot;py-5 bg-light&quot;&gt;
+&lt;div class=&quot;container&quot;&gt;
+&lt;div class=&quot;text-center mb-5&quot;&gt;
+&lt;h2 class=&quot;display-5 fw-bold&quot; style=&quot;color: #2d3748;&quot;&gt;
+How &lt;span style=&quot;background: linear-gradient(135deg, #667eea, #764ba2); -webkit-
+background-clip: text; -webkit-text-fill-color: transparent;&quot;&gt;It Works&lt;/span&gt;
+&lt;/h2&gt;
+&lt;p class=&quot;text-muted&quot; style=&quot;font-size: 1.2rem;&quot;&gt;Get started in three simple steps.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;row g-4&quot;&gt;
+&lt;div class=&quot;col-md-4 text-center&quot;&gt;
+&lt;div class=&quot;step-circle&quot; style=&quot;background: linear-gradient(135deg, #667eea,
+#764ba2);&quot;&gt;1&lt;/div&gt;
+&lt;h5 class=&quot;fw-bold&quot;&gt;Create Your Profile&lt;/h5&gt;
+&lt;p class=&quot;text-muted&quot;&gt;Sign up and tell us about your finances, study habits, and fitness
+goals.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;col-md-4 text-center&quot;&gt;
+&lt;div class=&quot;step-circle&quot; style=&quot;background: linear-gradient(135deg, #f093fb,
+#f5576c);&quot;&gt;2&lt;/div&gt;
+&lt;h5 class=&quot;fw-bold&quot;&gt;Log Your Activities&lt;/h5&gt;
+&lt;p class=&quot;text-muted&quot;&gt;Add daily transactions, study sessions, and fitness activities – the
+more data, the smarter your Digital Twin.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;col-md-4 text-center&quot;&gt;
+&lt;div class=&quot;step-circle&quot; style=&quot;background: linear-gradient(135deg, #43e97b,
+#38f9d7);&quot;&gt;3&lt;/div&gt;
+&lt;h5 class=&quot;fw-bold&quot;&gt;Simulate &amp;amp; Improve&lt;/h5&gt;
+&lt;p class=&quot;text-muted&quot;&gt;Run simulations, get AIpowered recommendations, and watch your
+life transform.&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;/section&gt;
+&lt;!-- ===== STATS ===== --&gt;
+&lt;section class=&quot;py-5&quot; style=&quot;background: #2d3748; color: white;&quot;&gt;
+&lt;div class=&quot;container&quot;&gt;
+&lt;div class=&quot;row text-center g-4&quot;&gt;
+&lt;div class=&quot;col-md-3&quot;&gt;
+&lt;div class=&quot;stat-number&quot; style=&quot;color: #667eea;&quot;&gt;10K+&lt;/div&gt;
+&lt;p class=&quot;text-light-50&quot;&gt;Active Users&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;col-md-3&quot;&gt;
+&lt;div class=&quot;stat-number&quot; style=&quot;color: #f093fb;&quot;&gt;500K+&lt;/div&gt;
+&lt;p class=&quot;text-light-50&quot;&gt;Simulations Run&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;col-md-3&quot;&gt;
+&lt;div class=&quot;stat-number&quot; style=&quot;color: #4facfe;&quot;&gt;95%&lt;/div&gt;
+&lt;p class=&quot;text-light-50&quot;&gt;User Satisfaction&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;col-md-3&quot;&gt;
+&lt;div class=&quot;stat-number&quot; style=&quot;color: #43e97b;&quot;&gt;4.9 ⭐&lt;/div&gt;
+&lt;p class=&quot;text-light-50&quot;&gt;Average Rating&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/section&gt;
+&lt;!-- ===== CALL TO ACTION ===== --&gt;
+&lt;section class=&quot;cta-section&quot;&gt;
+&lt;div class=&quot;container text-center&quot;&gt;
+&lt;h2 class=&quot;display-5 fw-bold mb-3&quot;&gt;
+Ready to &lt;span style=&quot;text-decoration: underline; text-underline-offset:
+8px;&quot;&gt;Transform&lt;/span&gt; Your Life?
+&lt;/h2&gt;
+&lt;p class=&quot;mb-4&quot; style=&quot;font-size: 1.2rem; opacity: 0.9;&quot;&gt;
+Join thousands of users who are making smarter decisions with Digital Twin AI.
+&lt;/p&gt;
+&lt;a href=&quot;{{ url_for(&#39;register&#39;) }}&quot; class=&quot;btn btn-primary-soft btn-lg px-5 py-3&quot;&gt;
+Start Your Free Trial
+&lt;/a&gt;
+&lt;p class=&quot;mt-3 small&quot; style=&quot;opacity: 0.7;&quot;&gt;No credit card required • Free forever&lt;/p&gt;
+&lt;/div&gt;
+&lt;/section&gt;
+{% endblock %}

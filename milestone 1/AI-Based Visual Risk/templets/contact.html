@@ -1,0 +1,401 @@
+{% extends "base.html" %}
+{% block extra_css %}
+<style>
+.contact-page {
+    --contact-accent: #667eea;
+    --contact-purple: #764ba2;
+    --contact-surface: var(--bg-card);
+    --contact-border: var(--border-color);
+    color: var(--text-primary);
+    padding: 3rem 0 1rem;
+}
+
+.contact-hero {
+    position: relative;
+    overflow: hidden;
+    padding: clamp(2.5rem, 7vw, 5rem) 2rem;
+    border-radius: 28px;
+    color: #fff;
+    text-align: center;
+    background: linear-gradient(135deg, var(--contact-accent), var(--contact-purple));
+    box-shadow: 0 18px 45px rgba(102, 126, 234, 0.2);
+}
+
+.contact-hero::before,
+.contact-hero::after {
+    position: absolute;
+    content: "";
+    border: 1px solid rgba(255, 255, 255, 0.18);
+    border-radius: 50%;
+    pointer-events: none;
+}
+
+.contact-hero::before {
+    width: 300px;
+    height: 300px;
+    top: -190px;
+    right: -65px;
+}
+
+.contact-hero::after {
+    width: 210px;
+    height: 210px;
+    bottom: -150px;
+    left: 8%;
+}
+
+.contact-hero-content {
+    position: relative;
+    z-index: 1;
+    max-width: 720px;
+    margin: 0 auto;
+}
+
+.contact-eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-bottom: 1rem;
+    padding: 0.45rem 0.9rem;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.12);
+    font-size: 0.85rem;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+}
+
+.contact-hero h1 {
+    margin-bottom: 1rem;
+    font-size: clamp(2.2rem, 5vw, 3.6rem);
+    font-weight: 750;
+    letter-spacing: -0.04em;
+}
+
+.contact-hero p {
+    max-width: 590px;
+    margin: 0 auto;
+    color: rgba(255, 255, 255, 0.88);
+    font-size: clamp(1rem, 2vw, 1.15rem);
+    line-height: 1.75;
+}
+
+.contact-section {
+    padding: 4rem 0 1rem;
+}
+
+.contact-section-heading {
+    max-width: 650px;
+    margin: 0 auto 2rem;
+    text-align: center;
+}
+
+.contact-section-heading h2 {
+    margin-bottom: 0.65rem;
+    font-weight: 750;
+    letter-spacing: -0.03em;
+}
+
+.contact-section-heading p {
+    margin: 0;
+    color: var(--text-muted);
+}
+
+.contact-card {
+    height: 100%;
+    padding: 1.6rem;
+    border: 1px solid var(--contact-border);
+    border-radius: 20px;
+    background: var(--contact-surface);
+    box-shadow: var(--shadow);
+    transition: transform 180ms ease, box-shadow 180ms ease;
+}
+
+.contact-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 14px 32px rgba(45, 55, 72, 0.12);
+}
+
+.contact-card-icon {
+    display: grid;
+    width: 52px;
+    height: 52px;
+    margin-bottom: 1.2rem;
+    place-items: center;
+    border-radius: 16px;
+    color: #fff;
+    background: linear-gradient(135deg, var(--contact-accent), var(--contact-purple));
+    font-size: 1.25rem;
+}
+
+.contact-card h3 {
+    margin-bottom: 0.65rem;
+    font-size: 1.15rem;
+    font-weight: 700;
+}
+
+.contact-card p {
+    min-height: 3rem;
+    margin-bottom: 1.2rem;
+    color: var(--text-muted);
+    line-height: 1.65;
+}
+
+.contact-card-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: var(--contact-accent);
+    font-weight: 650;
+    text-decoration: none;
+}
+
+.contact-card-link:hover {
+    color: var(--contact-purple);
+}
+
+.helpdesk-section {
+    padding: 3rem 0 0;
+}
+
+.helpdesk-note {
+    display: inline-block;
+    margin-top: 0.75rem;
+    padding: 0.35rem 0.75rem;
+    border-radius: 999px;
+    color: var(--contact-accent);
+    background: rgba(102, 126, 234, 0.1);
+    font-size: 0.8rem;
+    font-weight: 650;
+}
+
+.helpdesk-card {
+    height: 100%;
+    padding: 1.5rem;
+    border: 1px solid var(--contact-border);
+    border-radius: 18px;
+    background: var(--contact-surface);
+    box-shadow: var(--shadow);
+}
+
+.helpdesk-card h3 {
+    margin-bottom: 0.4rem;
+    font-size: 1.1rem;
+    font-weight: 700;
+}
+
+.helpdesk-card > p {
+    min-height: 3rem;
+    margin-bottom: 1.2rem;
+    color: var(--text-muted);
+    line-height: 1.6;
+}
+
+.helpdesk-detail {
+    display: flex;
+    align-items: center;
+    gap: 0.7rem;
+    margin-top: 0.8rem;
+    color: var(--text-primary);
+    font-size: 0.95rem;
+    overflow-wrap: anywhere;
+}
+
+.helpdesk-detail i {
+    width: 1rem;
+    color: var(--contact-accent);
+    text-align: center;
+}
+
+.helpdesk-detail a {
+    color: inherit;
+    text-decoration: none;
+}
+
+.helpdesk-detail a:hover {
+    color: var(--contact-accent);
+    text-decoration: underline;
+}
+
+.contact-bottom {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1.5rem;
+    margin: 3rem 0 1rem;
+    padding: clamp(1.5rem, 4vw, 2.5rem);
+    border: 1px solid var(--contact-border);
+    border-radius: 22px;
+    background: var(--contact-surface);
+    box-shadow: var(--shadow);
+}
+
+.contact-bottom h2 {
+    margin-bottom: 0.45rem;
+    font-size: 1.35rem;
+    font-weight: 700;
+}
+
+.contact-bottom p {
+    margin: 0;
+    color: var(--text-muted);
+}
+
+.contact-home-link {
+    flex: 0 0 auto;
+    padding: 0.75rem 1.25rem;
+    border: 0;
+    border-radius: 999px;
+    color: #fff;
+    background: linear-gradient(135deg, var(--contact-accent), var(--contact-purple));
+    font-weight: 650;
+    text-decoration: none;
+    transition: transform 180ms ease, box-shadow 180ms ease;
+}
+
+.contact-home-link:hover {
+    transform: translateY(-2px);
+    color: #fff;
+    box-shadow: 0 8px 18px rgba(102, 126, 234, 0.25);
+}
+
+@media (max-width: 575.98px) {
+    .contact-page {
+        padding-top: 1.5rem;
+    }
+
+    .contact-hero {
+        padding-right: 1.25rem;
+        padding-left: 1.25rem;
+        border-radius: 20px;
+    }
+
+    .contact-section {
+        padding-top: 3rem;
+    }
+
+    .contact-bottom {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+}
+</style>
+{% endblock %}
+
+{% block content %}
+<main class="contact-page">
+    <div class="container">
+        <section class="contact-hero" aria-labelledby="contact-title">
+            <div class="contact-hero-content">
+                <span class="contact-eyebrow"><i class="fas fa-comments" aria-hidden="true"></i> CONTACT</span>
+                <h1 id="contact-title">Let’s make your next step clearer.</h1>
+                <p>
+                    Questions about Visual Risk and AI Intelligence? Find the right place to get started,
+                    explore the platform, or manage your account.
+                </p>
+            </div>
+        </section>
+
+        <section class="contact-section" aria-labelledby="contact-options-title">
+            <div class="contact-section-heading">
+                <h2 id="contact-options-title">How can we help?</h2>
+                <p>Choose a starting point and we’ll help you find your way around.</p>
+            </div>
+
+            <div class="row g-4">
+                <div class="col-md-4">
+                    <article class="contact-card">
+                        <div class="contact-card-icon"><i class="fas fa-compass" aria-hidden="true"></i></div>
+                        <h3>Explore the platform</h3>
+                        <p>Learn how AI-powered insights and simulations can support your everyday decisions.</p>
+                        <a class="contact-card-link" href="{{ url_for('index') }}#features">
+                            Explore features <i class="fas fa-arrow-right" aria-hidden="true"></i>
+                        </a>
+                    </article>
+                </div>
+                <div class="col-md-4">
+                    <article class="contact-card">
+                        <div class="contact-card-icon"><i class="fas fa-user-circle" aria-hidden="true"></i></div>
+                        <h3>Account assistance</h3>
+                        <p>Sign in to your account or create one to start tracking goals and personal progress.</p>
+                        <a class="contact-card-link" href="{{ url_for('login') }}">
+                            Go to login <i class="fas fa-arrow-right" aria-hidden="true"></i>
+                        </a>
+                    </article>
+                </div>
+                <div class="col-md-4">
+                    <article class="contact-card">
+                        <div class="contact-card-icon"><i class="fas fa-lightbulb" aria-hidden="true"></i></div>
+                        <h3>About Visual Risk</h3>
+                        <p>Get to know the ideas behind a more informed, AI-assisted approach to daily life.</p>
+                        <a class="contact-card-link" href="{{ url_for('about') }}">
+                            Learn about us <i class="fas fa-arrow-right" aria-hidden="true"></i>
+                        </a>
+                    </article>
+                </div>
+            </div>
+        </section>
+
+        <section class="helpdesk-section" aria-labelledby="helpdesk-title">
+            <div class="contact-section-heading">
+                <h2 id="helpdesk-title">Helpdesk contacts</h2>
+                <p>Reach the right team for account questions, technical issues, or general help.</p>
+                <span class="helpdesk-note">Sample contact details</span>
+            </div>
+
+            <div class="row g-4">
+                <div class="col-md-4">
+                    <article class="helpdesk-card">
+                        <h3>General helpdesk</h3>
+                        <p>For general questions about using Visual Risk and its features.</p>
+                        <div class="helpdesk-detail">
+                            <i class="fas fa-envelope" aria-hidden="true"></i>
+                            <a href="mailto:helpdesk@example.com">helpdesk@example.com</a>
+                        </div>
+                        <div class="helpdesk-detail">
+                            <i class="fas fa-phone" aria-hidden="true"></i>
+                            <a href="tel:+12025550142">+1 (202) 555-0142</a>
+                        </div>
+                    </article>
+                </div>
+                <div class="col-md-4">
+                    <article class="helpdesk-card">
+                        <h3>Account support</h3>
+                        <p>For sign-in, registration, and account access questions.</p>
+                        <div class="helpdesk-detail">
+                            <i class="fas fa-envelope" aria-hidden="true"></i>
+                            <a href="mailto:accounts@example.com">accounts@example.com</a>
+                        </div>
+                        <div class="helpdesk-detail">
+                            <i class="fas fa-clock" aria-hidden="true"></i>
+                            <span>Mon–Fri, 9:00 AM–5:00 PM</span>
+                        </div>
+                    </article>
+                </div>
+                <div class="col-md-4">
+                    <article class="helpdesk-card">
+                        <h3>Technical support</h3>
+                        <p>For troubleshooting errors, simulations, or unexpected results.</p>
+                        <div class="helpdesk-detail">
+                            <i class="fas fa-envelope" aria-hidden="true"></i>
+                            <a href="mailto:tech@example.com">tech@example.com</a>
+                        </div>
+                        <div class="helpdesk-detail">
+                            <i class="fas fa-clock" aria-hidden="true"></i>
+                            <span>Typical reply: within 1 business day</span>
+                        </div>
+                    </article>
+                </div>
+            </div>
+        </section>
+
+        <section class="contact-bottom" aria-label="Return to the home page">
+            <div>
+                <h2>Ready to take a closer look?</h2>
+                <p>See how Visual Risk brings your goals, insights, and simulations together.</p>
+            </div>
+            <a class="contact-home-link" href="{{ url_for('index') }}">Back to home</a>
+        </section>
+    </div>
+</main>
+{% endblock %}
