@@ -1,0 +1,136 @@
+{% extends "base.html" %}
+
+{% block extra_css %}
+<style>
+  .policy-page {
+    --policy-accent: #667eea;
+    --policy-purple: #764ba2;
+    color: var(--text-primary);
+    padding: 3rem 0 1rem;
+  }
+  .policy-hero {
+    position: relative;
+    overflow: hidden;
+    padding: clamp(2.5rem, 7vw, 5rem) 2rem;
+    border-radius: 28px;
+    color: #fff;
+    background: linear-gradient(135deg, var(--policy-accent), var(--policy-purple));
+    box-shadow: 0 18px 45px rgba(102, 126, 234, .2);
+  }
+  .policy-hero::before, .policy-hero::after {
+    position: absolute;
+    content: "";
+    border: 1px solid rgba(255, 255, 255, .18);
+    border-radius: 50%;
+    pointer-events: none;
+  }
+  .policy-hero::before { width: 300px; height: 300px; top: -190px; right: -65px; }
+  .policy-hero::after { width: 210px; height: 210px; bottom: -150px; left: 8%; }
+  .policy-hero-content { position: relative; z-index: 1; max-width: 760px; margin: 0 auto; text-align: center; }
+  .policy-eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: .5rem;
+    margin-bottom: 1rem;
+    padding: .45rem .9rem;
+    border: 1px solid rgba(255, 255, 255, .3);
+    border-radius: 999px;
+    background: rgba(255, 255, 255, .12);
+    font-size: .85rem;
+    font-weight: 600;
+    letter-spacing: .04em;
+  }
+  .policy-hero h1 { margin-bottom: 1rem; font-size: clamp(2.2rem, 5vw, 3.6rem); font-weight: 750; letter-spacing: -.04em; }
+  .policy-hero p { margin: 0 auto; color: rgba(255, 255, 255, .9); font-size: 1.08rem; line-height: 1.75; }
+  .policy-content { max-width: 900px; margin: 0 auto; padding: 3rem 0 1rem; }
+  .policy-intro, .policy-section {
+    margin-bottom: 1.25rem;
+    padding: clamp(1.35rem, 4vw, 2rem);
+    border: 1px solid var(--border-color);
+    border-radius: 20px;
+    background: var(--bg-card);
+    box-shadow: var(--shadow);
+  }
+  .policy-intro { border-left: 4px solid var(--policy-accent); }
+  .policy-section h2 { margin-bottom: .8rem; font-size: 1.25rem; font-weight: 700; }
+  .policy-section p, .policy-section li, .policy-intro p { color: var(--text-muted); line-height: 1.75; }
+  .policy-section p:last-child, .policy-section ul:last-child, .policy-intro p:last-child { margin-bottom: 0; }
+  .policy-section ul { padding-left: 1.25rem; }
+  .policy-section li + li { margin-top: .45rem; }
+  .policy-updated { color: var(--text-muted); font-size: .9rem; }
+  @media (max-width: 575.98px) {
+    .policy-page { padding-top: 1.5rem; }
+    .policy-hero { padding-right: 1.25rem; padding-left: 1.25rem; border-radius: 20px; }
+  }
+</style>
+{% endblock %}
+
+{% block content %}
+<main class="policy-page">
+  <div class="container">
+    <header class="policy-hero" aria-labelledby="terms-title">
+      <div class="policy-hero-content">
+        <span class="policy-eyebrow"><i class="fas fa-file-contract" aria-hidden="true"></i> TERMS OF USE</span>
+        <h1 id="terms-title">A clear understanding, from the start.</h1>
+        <p>These terms explain the ground rules for using Visual Risk and AI Intelligence and its personal planning tools.</p>
+      </div>
+    </header>
+
+    <div class="policy-content">
+      <p class="policy-updated">Last updated: October 16, 2026</p>
+      <section class="policy-intro">
+        <p>By accessing or using Visual Risk and AI Intelligence (“Visual Risk” or “the service”), you agree to these terms. If you do not agree, please do not use the service.</p>
+      </section>
+
+      <section class="policy-section">
+        <h2>1. What the service provides</h2>
+        <p>Visual Risk offers tools for recording and reviewing personal finance, study, fitness, and goal information. Dashboards, forecasts, simulations, and other generated insights are informational aids based on the information available to the service.</p>
+      </section>
+
+      <section class="policy-section">
+        <h2>2. Your account and information</h2>
+        <ul>
+          <li>Provide information that is accurate to the best of your knowledge and keep it reasonably up to date.</li>
+          <li>Keep your sign-in credentials private. You are responsible for activity performed through your account and should notify the service operator if you believe it has been accessed without permission.</li>
+          <li>Only enter information that you are entitled to provide. Avoid submitting highly sensitive information that is not needed to use the service.</li>
+        </ul>
+      </section>
+
+      <section class="policy-section">
+        <h2>3. Acceptable use</h2>
+        <p>Use the service lawfully and do not attempt to disrupt, damage, reverse engineer, gain unauthorized access to, or misuse the service or another person’s account. Do not use its outputs as a substitute for professional advice or in a way that violates another person’s rights.</p>
+      </section>
+
+      <section class="policy-section">
+        <h2>4. Informational tools—not professional advice</h2>
+        <p>Visual Risk does not provide financial, investment, medical, fitness, educational, or other professional advice. Forecasts and scores are estimates, may be incomplete or inaccurate, and are not guarantees of future outcomes. Consider your circumstances and consult a qualified professional before making important decisions.</p>
+      </section>
+
+      <section class="policy-section">
+        <h2>5. Availability and changes</h2>
+        <p>The service may be updated, changed, suspended, or discontinued. We aim to make it useful, but do not promise uninterrupted availability, error-free operation, or that information will always be retained. Keep your own copies of information you cannot afford to lose.</p>
+      </section>
+
+      <section class="policy-section">
+        <h2>6. Ownership and service content</h2>
+        <p>You retain your rights to information you submit. The service’s software, design, and materials are owned by their respective rights holders and may not be copied, redistributed, or used to create a competing service except as permitted by law or with permission.</p>
+      </section>
+
+      <section class="policy-section">
+        <h2>7. Disclaimer and liability</h2>
+        <p>To the extent permitted by applicable law, the service is provided “as is” and “as available,” without warranties of any kind. To the extent permitted by law, the service operator is not liable for indirect or consequential loss, or for decisions made in reliance on estimates or other service content. Nothing in these terms limits liability where it cannot legally be limited.</p>
+      </section>
+
+      <section class="policy-section">
+        <h2>8. Changes to these terms</h2>
+        <p>These terms may be revised as the service changes. The updated version will be posted on this page with a revised date. Continued use after the changes take effect means you accept the revised terms.</p>
+      </section>
+
+      <section class="policy-section">
+        <h2>9. Contact</h2>
+        <p>For questions about these terms, use the contact channel provided by the operator of the Visual Risk service.</p>
+      </section>
+    </div>
+  </div>
+</main>
+{% endblock %}
