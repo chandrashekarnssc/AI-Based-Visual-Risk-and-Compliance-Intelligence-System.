@@ -1,0 +1,424 @@
+{% extends "base.html" %}
+
+{% block extra_css %}
+<style>
+    .study-wrapper {
+        min-height: 75vh;
+        padding: 1rem;
+        border-radius: 20px;
+        background: linear-gradient(145deg, #f0f4ff, #f8f2ff);
+    }
+    .study-heading { color: #2d3748; }
+    .study-metric {
+        height: 100%;
+        padding: 1rem 1.1rem;
+        border-radius: 16px;
+        color: #fff !important;
+        transition: transform .2s ease, box-shadow .2s ease;
+    }
+    .study-metric:hover { transform: translateY(-3px); box-shadow: 0 10px 26px rgba(45,55,72,.15); }
+    .study-metric h2 { margin: .1rem 0; font-size: 1.75rem; font-weight: 700; }
+    .study-metric h2, .study-metric h5, .study-metric small { color: inherit !important; }
+    .study-metric h5 { margin: 0; font-size: .85rem; font-weight: 500; opacity: .9; }
+    .study-metric small { font-size: .75rem; opacity: .85; }
+    .study-metric-icon { font-size: 1.6rem; opacity: .7; }
+    .study-card {
+        height: 100%;
+        overflow: hidden;
+        border: 0;
+        border-radius: 16px;
+        box-shadow: 0 4px 14px rgba(45,55,72,.07);
+    }
+    .study-card-header {
+        padding: .85rem 1rem;
+        border-bottom: 1px solid var(--border-color);
+        font-size: .92rem;
+        font-weight: 650;
+    }
+    .study-card .form-control { border-radius: 10px; }
+    .study-submit {
+        width: 100%;
+        border: 0;
+        border-radius: 30px;
+        padding: .65rem 1rem;
+        color: #fff;
+        font-weight: 600;
+        background: linear-gradient(135deg, #667eea, #764ba2);
+    }
+    .study-submit:hover { color: #fff; filter: brightness(.95); }
+    .study-chart { position: relative; height: 190px; }
+    .subject-chart { position: relative; height: 225px; }
+    .study-table-scroll { max-height: 350px; overflow: auto; }
+    .study-table { margin: 0; white-space: nowrap; }
+    .study-table th {
+        position: sticky;
+        top: 0;
+        z-index: 1;
+        color: #718096;
+        background: var(--bg-card);
+        font-size: .72rem;
+        text-transform: uppercase;
+        letter-spacing: .3px;
+    }
+    .study-table td { vertical-align: middle; font-size: .84rem; }
+    .study-actions form { display: inline-block; }
+    .gpa-value { color: #667eea; font-size: 3rem; line-height: 1.1; font-weight: 750; }
+    .study-empty { color: #718096; }
+    @media (max-width: 575.98px) {
+        .study-wrapper { padding: .7rem; }
+        .study-metric { padding: .85rem; }
+        .study-metric h2 { font-size: 1.4rem; }
+        .study-heading { font-size: 1.25rem; }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<main class="study-wrapper container-fluid">
+    <div class="d-flex flex-wrap justify-content-between align-items-center gap-2 mb-3">
+        <h3 class="study-heading fw-bold mb-0">
+            <i class="fas fa-book-open text-success me-2"></i>Study &amp; Productivity
+        </h3>
+        <span class="small text-muted">Last updated: {{ updated_at.strftime('%d %b, %I:%M %p') }}</span>
+    </div>
+
+    <section class="row g-3 mb-3" aria-label="Study summary">
+        <div class="col-6 col-xl-3">
+            <div class="study-metric" style="background:linear-gradient(120deg,#667eea,#764ba2)">
+                <div class="d-flex justify-content-between">
+                    <div>
+                        <h5>Total Hours</h5>
+                        <h2>{{ '%.1f'|format(total_hours) }}</h2>
+                        <small>All time</small>
+                    </div>
+                    <i class="fas fa-clock study-metric-icon mt-1" aria-hidden="true"></i>
+                </div>
+            </div>
+        </div>
+        <div class="col-6 col-xl-3">
+            <div class="study-metric" style="background:linear-gradient(120deg,#e879d4,#f5576c)">
+                <div class="d-flex justify-content-between">
+                    <div>
+                        <h5>Avg Productivity</h5>
+                        <h2>{{ '%.1f'|format(average_productivity) }}%</h2>
+                        <small>Across all sessions</small>
+                    </div>
+                    <i class="fas fa-bolt study-metric-icon mt-1" aria-hidden="true"></i>
+                </div>
+            </div>
+        </div>
+        <div class="col-6 col-xl-3">
+            <div class="study-metric" style="background:linear-gradient(120deg,#38d996,#25d9d0)">
+                <div class="d-flex justify-content-between">
+                    <div>
+                        <h5>Study Streak</h5>
+                        <h2>{{ study_streak }} {{ 'day' if study_streak == 1 else 'days' }}</h2>
+                        <small>Consecutive days</small>
+                    </div>
+                    <i class="fas fa-fire study-metric-icon mt-1" aria-hidden="true"></i>
+                </div>
+            </div>
+        </div>
+        <div class="col-6 col-xl-3">
+            <div class="study-metric" style="background:linear-gradient(120deg,#36a3e8,#08c8d7)">
+                <div class="d-flex justify-content-between">
+                    <div>
+                        <h5>Predicted GPA</h5>
+                        <h2>{{ '%.2f'|format(gpa) }}</h2>
+                        <small>Out of 4.0</small>
+                    </div>
+                    <i class="fas fa-graduation-cap study-metric-icon mt-1" aria-hidden="true"></i>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <div class="row g-3">
+        <section class="col-lg-4" aria-label="Log a study session">
+            <div class="card study-card mb-3">
+                <div class="study-card-header">
+                    <i class="fas fa-plus-circle text-success me-1"></i>Log Study Session
+                </div>
+                <div class="card-body">
+                    <form method="post" action="{{ url_for('add_study_log') }}" id="addStudyForm">
+                        <div class="mb-3">
+                            <label for="study-date" class="form-label small fw-bold">Date</label>
+                            <input id="study-date" type="date" name="date" class="form-control"
+                                   value="{{ today }}" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="study-hours" class="form-label small fw-bold">Hours</label>
+                            <input id="study-hours" type="number" name="hours" min="0.01" max="24"
+                                   step="0.25" class="form-control" placeholder="e.g., 2.5" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="study-subject" class="form-label small fw-bold">Subject</label>
+                            <input id="study-subject" type="text" name="subject" maxlength="100"
+                                   class="form-control" placeholder="e.g., Mathematics" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="study-productivity" class="form-label small fw-bold">
+                                Productivity (0–100)
+                            </label>
+                            <input id="study-productivity" type="number" name="productivity_score"
+                                   min="0" max="100" step="1" value="75" class="form-control" required>
+                        </div>
+                        <button type="submit" class="study-submit">
+                            <i class="fas fa-save me-1"></i>Log Session
+                        </button>
+                    </form>
+                </div>
+            </div>
+
+            <div class="card study-card">
+                <div class="study-card-header">
+                    <i class="fas fa-chart-line text-info me-1"></i>GPA Prediction
+                </div>
+                <div class="card-body py-4">
+                    <div class="gpa-value">{{ '%.2f'|format(gpa) }}</div>
+                    <div class="text-muted mb-3">Estimated GPA on a 4.0 scale</div>
+                    <div class="progress" role="progressbar" aria-label="Predicted GPA"
+                         aria-valuenow="{{ (gpa / 4 * 100)|round|int }}" aria-valuemin="0" aria-valuemax="100"
+                         style="height:10px">
+                        <div class="progress-bar" style="width:{{ (gpa / 4 * 100)|round }}%"></div>
+                    </div>
+                    <p class="small text-muted mt-3 mb-0">
+                        This estimate uses your logged study hours and average productivity.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <section class="col-lg-8" aria-label="Study analytics">
+            <div class="row g-3 mb-3">
+                <div class="col-md-6">
+                    <div class="card study-card">
+                        <div class="study-card-header">
+                            <i class="fas fa-calendar-day text-primary me-1"></i>Daily Study Hours
+                        </div>
+                        <div class="card-body">
+                            <div class="study-chart"><canvas id="studyHoursChart" aria-label="Study hours over the last 14 days"></canvas></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="card study-card">
+                        <div class="study-card-header">
+                            <i class="fas fa-chart-area text-success me-1"></i>Productivity Trend
+                        </div>
+                        <div class="card-body">
+                            <div class="study-chart"><canvas id="productivityChart" aria-label="Average productivity over the last 14 days"></canvas></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row g-3">
+                <div class="col-md-5">
+                    <div class="card study-card">
+                        <div class="study-card-header">
+                            <i class="fas fa-chart-pie text-warning me-1"></i>Hours by Subject
+                        </div>
+                        <div class="card-body">
+                            {% if subjects %}
+                            <div class="subject-chart"><canvas id="subjectChart" aria-label="Study hours grouped by subject"></canvas></div>
+                            {% else %}
+                            <div class="study-empty text-center py-5">
+                                <i class="fas fa-book fa-2x mb-2 d-block"></i>
+                                Log a session to see your subject breakdown.
+                            </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-7">
+                    <div class="card study-card">
+                        <div class="study-card-header d-flex justify-content-between align-items-center">
+                            <span><i class="fas fa-list text-primary me-1"></i>Recent Logs</span>
+                            <span class="badge bg-light text-dark">{{ logs|length }} {{ 'entry' if logs|length == 1 else 'entries' }}</span>
+                        </div>
+                        <div class="study-table-scroll">
+                            <table class="table table-hover study-table">
+                                <thead>
+                                    <tr>
+                                        <th>Date</th>
+                                        <th>Subject</th>
+                                        <th class="text-end">Hours</th>
+                                        <th class="text-center">Productivity</th>
+                                        <th class="text-center">Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for log in logs %}
+                                    <tr>
+                                        <td>{{ log.date.strftime('%d-%m-%Y') }}</td>
+                                        <td>{{ log.subject }}</td>
+                                        <td class="text-end">{{ '%.1f'|format(log.hours) }}</td>
+                                        <td class="text-center"><span class="badge rounded-pill">{{ log.productivity_score }}%</span></td>
+                                        <td class="text-center study-actions">
+                                            <button type="button" class="btn btn-sm btn-outline-primary me-1"
+                                                    data-bs-toggle="modal" data-bs-target="#editStudyModal"
+                                                    data-id="{{ log.id }}"
+                                                    data-date="{{ log.date.isoformat() }}"
+                                                    data-hours="{{ log.hours }}"
+                                                    data-subject="{{ log.subject }}"
+                                                    data-productivity="{{ log.productivity_score }}"
+                                                    aria-label="Edit {{ log.subject }} session">
+                                                <i class="fas fa-edit" aria-hidden="true"></i>
+                                            </button>
+                                            <form method="post" action="{{ url_for('delete_study_log', study_log_id=log.id) }}"
+                                                  onsubmit="return confirm('Permanently delete this study session?');">
+                                                <button type="submit" class="btn btn-sm btn-outline-danger"
+                                                        aria-label="Delete {{ log.subject }} session">
+                                                    <i class="fas fa-trash-alt" aria-hidden="true"></i>
+                                                </button>
+                                            </form>
+                                        </td>
+                                    </tr>
+                                    {% else %}
+                                    <tr>
+                                        <td colspan="5" class="text-center text-muted py-4">
+                                            No study sessions yet. Add your first session using the form.
+                                        </td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+</main>
+
+<div class="modal fade" id="editStudyModal" tabindex="-1" aria-labelledby="editStudyModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form method="post" action="{{ url_for('edit_study_log') }}">
+                <input type="hidden" name="id" id="edit-study-id">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="editStudyModalLabel">
+                        <i class="fas fa-edit text-primary me-2"></i>Edit Study Session
+                    </h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label for="edit-study-date" class="form-label fw-bold">Date</label>
+                        <input id="edit-study-date" type="date" name="date" class="form-control" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="edit-study-hours" class="form-label fw-bold">Hours</label>
+                        <input id="edit-study-hours" type="number" name="hours" min="0.01" max="24"
+                               step="0.25" class="form-control" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="edit-study-subject" class="form-label fw-bold">Subject</label>
+                        <input id="edit-study-subject" type="text" name="subject" maxlength="100"
+                               class="form-control" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="edit-study-productivity" class="form-label fw-bold">Productivity (0–100)</label>
+                        <input id="edit-study-productivity" type="number" name="productivity_score"
+                               min="0" max="100" step="1" class="form-control" required>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="submit" class="study-submit w-auto">
+                        <i class="fas fa-save me-1"></i>Save Changes
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    const studyLabels = {{ chart_labels|tojson }};
+    const studyHours = {{ chart_hours|tojson }};
+    const productivityScores = {{ chart_productivity|tojson }};
+    const chartGrid = 'rgba(148, 163, 184, 0.2)';
+
+    new Chart(document.getElementById('studyHoursChart'), {
+        type: 'line',
+        data: {
+            labels: studyLabels,
+            datasets: [{
+                label: 'Study hours',
+                data: studyHours,
+                borderColor: '#667eea',
+                backgroundColor: 'rgba(102,126,234,0.12)',
+                fill: true,
+                tension: 0.35,
+                pointRadius: 2
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: { legend: { display: false } },
+            scales: { y: { beginAtZero: true, grid: { color: chartGrid } }, x: { grid: { display: false } } }
+        }
+    });
+
+    new Chart(document.getElementById('productivityChart'), {
+        type: 'line',
+        data: {
+            labels: studyLabels,
+            datasets: [{
+                label: 'Average productivity',
+                data: productivityScores,
+                borderColor: '#38c99a',
+                backgroundColor: 'rgba(56,201,154,0.12)',
+                fill: true,
+                tension: 0.35,
+                spanGaps: false,
+                pointRadius: 3
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: { legend: { display: false } },
+            scales: {
+                y: { min: 0, max: 100, grid: { color: chartGrid } },
+                x: { grid: { display: false } }
+            }
+        }
+    });
+
+    {% if subjects %}
+    new Chart(document.getElementById('subjectChart'), {
+        type: 'doughnut',
+        data: {
+            labels: {{ subjects|tojson }},
+            datasets: [{
+                data: {{ subject_hours|tojson }},
+                backgroundColor: ['#667eea', '#38c99a', '#f6ad55', '#ed64a6', '#4facfe', '#9f7aea', '#f56565'],
+                borderWidth: 2,
+                borderColor: '#fff'
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            cutout: '62%',
+            plugins: { legend: { position: 'bottom', labels: { boxWidth: 10, padding: 10 } } }
+        }
+    });
+    {% endif %}
+
+    document.getElementById('editStudyModal').addEventListener('show.bs.modal', function(event) {
+        const button = event.relatedTarget;
+        document.getElementById('edit-study-id').value = button.dataset.id;
+        document.getElementById('edit-study-date').value = button.dataset.date;
+        document.getElementById('edit-study-hours').value = button.dataset.hours;
+        document.getElementById('edit-study-subject').value = button.dataset.subject;
+        document.getElementById('edit-study-productivity').value = button.dataset.productivity;
+    });
+</script>
+{% endblock %}

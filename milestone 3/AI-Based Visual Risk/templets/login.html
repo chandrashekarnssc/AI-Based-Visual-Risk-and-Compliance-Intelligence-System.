@@ -1,0 +1,191 @@
+{% extends "base.html" %}
+
+{% block extra_css %}
+<style>
+    .login-wrapper {
+        min-height: 75vh;
+        display: grid;
+        place-items: center;
+        padding: 3rem 1rem;
+        background:
+            radial-gradient(circle at 15% 20%, rgba(102, 126, 234, 0.12), transparent 30%),
+            radial-gradient(circle at 85% 80%, rgba(118, 75, 162, 0.1), transparent 28%);
+    }
+    .login-card {
+        display: grid;
+        grid-template-columns: 0.9fr 1.1fr;
+        width: min(900px, 100%);
+        overflow: hidden;
+        border: 1px solid #e9eaf2;
+        border-radius: 24px;
+        background: #fff;
+        box-shadow: 0 24px 70px rgba(35, 42, 70, 0.12);
+    }
+    .login-intro {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        padding: 3rem;
+        color: #fff;
+        background: linear-gradient(145deg, #596fe0, #764ba2);
+    }
+    .login-illustration {
+        display: block;
+        width: min(100%, 240px);
+        margin-bottom: 2rem;
+        align-self: center;
+        border-radius: 18px;
+        box-shadow: 0 14px 32px rgba(30, 25, 80, 0.2);
+    }
+    .login-intro h1 {
+        margin-bottom: 0.85rem;
+        font-size: clamp(1.8rem, 4vw, 2.4rem);
+        font-weight: 700;
+        line-height: 1.15;
+    }
+    .login-intro p {
+        max-width: 290px;
+        margin: 0;
+        color: rgba(255, 255, 255, 0.86);
+        line-height: 1.7;
+    }
+    .login-form {
+        align-self: center;
+        padding: 3.5rem;
+    }
+    .login-form h2 {
+        margin-bottom: 0.45rem;
+        color: #252b40;
+        font-size: 1.8rem;
+        font-weight: 700;
+    }
+    .login-subtitle {
+        margin-bottom: 2rem;
+        color: #778099;
+    }
+    .login-field {
+        margin-bottom: 1.25rem;
+    }
+    .login-field label {
+        display: block;
+        margin-bottom: 0.5rem;
+        color: #343b52;
+        font-size: 0.92rem;
+        font-weight: 600;
+    }
+    .login-field input {
+        width: 100%;
+        min-height: 50px;
+        padding: 0.75rem 0.9rem;
+        border: 1px solid #dfe3ed;
+        border-radius: 10px;
+        color: #252b40;
+        background: #fff;
+        transition: border-color 0.2s, box-shadow 0.2s;
+    }
+    .login-field input:focus {
+        border-color: #667eea;
+        outline: none;
+        box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.16);
+    }
+    .login-submit {
+        width: 100%;
+        min-height: 50px;
+        margin-top: 0.5rem;
+        border: 0;
+        border-radius: 10px;
+        color: #fff;
+        background: linear-gradient(135deg, #667eea, #764ba2);
+        font-weight: 600;
+        transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .login-submit:hover {
+        transform: translateY(-1px);
+        box-shadow: 0 8px 20px rgba(102, 126, 234, 0.28);
+    }
+    .login-register {
+        margin: 1.5rem 0 0;
+        color: #778099;
+        text-align: center;
+    }
+    .login-register a {
+        color: #596fe0;
+        font-weight: 600;
+        text-decoration: none;
+    }
+    .login-register a:hover {
+        text-decoration: underline;
+    }
+    @media (max-width: 700px) {
+        .login-wrapper {
+            min-height: auto;
+            padding: 1.5rem 1rem;
+        }
+        .login-card {
+            grid-template-columns: 1fr;
+        }
+        .login-intro {
+            padding: 2rem;
+        }
+        .login-illustration {
+            width: min(100%, 180px);
+            margin-bottom: 1.2rem;
+        }
+        .login-form {
+            padding: 2rem;
+        }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<main class="login-wrapper">
+    <section class="login-card" aria-label="Sign in">
+        <div class="login-intro">
+            <img
+                class="login-illustration"
+                src="{{ url_for('static', filename='images/login-ai.png') }}"
+                alt="Illustration of an AI brain connected to a digital network"
+            >
+            <h1>Welcome back</h1>
+            <p>Sign in to continue to your Visual Risk dashboard and personal insights.</p>
+        </div>
+
+        <div class="login-form">
+            <h2>Sign in</h2>
+            <p class="login-subtitle">Enter your account details below.</p>
+
+            <form method="post" action="{{ url_for('login') }}">
+                <div class="login-field">
+                    <label for="username">Username</label>
+                    <input
+                        id="username"
+                        name="username"
+                        type="text"
+                        autocomplete="username"
+                        placeholder="Your username"
+                        required
+                        autofocus
+                    >
+                </div>
+                <div class="login-field">
+                    <label for="password">Password</label>
+                    <input
+                        id="password"
+                        name="password"
+                        type="password"
+                        autocomplete="current-password"
+                        placeholder="Your password"
+                        required
+                    >
+                </div>
+                <button class="login-submit" type="submit">Sign in</button>
+            </form>
+
+            <p class="login-register">
+                Don't have an account? <a href="{{ url_for('register') }}">Create one</a>
+            </p>
+        </div>
+    </section>
+</main>
+{% endblock %}

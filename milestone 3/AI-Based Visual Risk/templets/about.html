@@ -1,0 +1,176 @@
+{% extends "base.html" %}
+
+{% block extra_css %}
+<style>
+  .about-hero {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: #fff;
+    padding: 5.5rem 0 4.5rem;
+    border-radius: 0 0 42px 42px;
+    overflow: hidden;
+    position: relative;
+  }
+  .about-hero::after {
+    content: "";
+    position: absolute;
+    width: 330px;
+    height: 330px;
+    border: 48px solid rgba(255,255,255,.09);
+    border-radius: 50%;
+    right: -120px;
+    top: -145px;
+  }
+  .about-kicker {
+    display: inline-flex;
+    gap: .55rem;
+    align-items: center;
+    padding: .45rem .95rem;
+    border: 1px solid rgba(255,255,255,.28);
+    border-radius: 100px;
+    background: rgba(255,255,255,.12);
+    font-weight: 600;
+  }
+  .about-title { font-size: clamp(2.45rem, 6vw, 4.4rem); font-weight: 750; letter-spacing: -.05em; }
+  .about-lead { max-width: 650px; font-size: 1.18rem; line-height: 1.8; opacity: .93; }
+  .purpose-card, .value-card, .journey-card {
+    border: 0;
+    border-radius: 20px;
+    box-shadow: 0 12px 35px rgba(44, 62, 110, .09);
+  }
+  .purpose-mark {
+    width: 74px;
+    height: 74px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 22px;
+    color: #fff;
+    font-size: 2rem;
+    background: linear-gradient(135deg, #667eea, #764ba2);
+  }
+  .value-icon {
+    width: 52px;
+    height: 52px;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 16px;
+    font-size: 1.35rem;
+  }
+  .icon-purple { background: #eeeaff; color: #6c63d9; }
+  .icon-pink { background: #ffe9ef; color: #e96687; }
+  .icon-blue { background: #e5f5ff; color: #2998d7; }
+  .icon-green { background: #e7fbf2; color: #2da875; }
+  .journey-number {
+    width: 38px;
+    height: 38px;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 50%;
+    color: #fff;
+    font-weight: 700;
+    background: linear-gradient(135deg, #667eea, #764ba2);
+  }
+  .cta-panel {
+    background: linear-gradient(135deg, #2d3748, #434f68);
+    border-radius: 26px;
+    color: #fff;
+  }
+  .btn-about {
+    border: 0;
+    border-radius: 50px;
+    background: #fff;
+    color: #5f5acb;
+    font-weight: 700;
+    padding: .8rem 1.7rem;
+  }
+</style>
+{% endblock %}
+
+{% block content %}
+<section class="about-hero">
+  <div class="container position-relative" style="z-index: 1;">
+    <div class="row align-items-center g-5">
+      <div class="col-lg-8">
+        <span class="about-kicker"><i class="fas fa-sparkles"></i> Human choices, clearer direction</span>
+        <h1 class="about-title mt-4">Better decisions for the life you are building.</h1>
+        <p class="about-lead mt-4 mb-0">Visual Risk turns your everyday finance, study, and fitness choices into a clearer picture of what comes next—so progress feels intentional, not overwhelming.</p>
+      </div>
+      <div class="col-lg-4 text-center d-none d-lg-block">
+        <div class="d-inline-flex align-items-center justify-content-center rounded-circle" style="width: 220px; height: 220px; background: rgba(255,255,255,.12); border: 1px solid rgba(255,255,255,.25);">
+          <i class="fas fa-compass" style="font-size: 6rem;"></i>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="py-5">
+  <div class="container py-lg-3">
+    <div class="row align-items-center g-5">
+      <div class="col-lg-5">
+        <div class="purpose-card card p-4 p-lg-5 h-100" style="background: #f4f3ff;">
+          <div class="purpose-mark"><i class="fas fa-bullseye"></i></div>
+          <h2 class="h2 fw-bold mt-4">Our purpose</h2>
+          <p class="text-muted mb-0" style="line-height: 1.8;">We believe a meaningful life is built through small, informed choices. Visual Risk brings the important parts of your personal data together and makes them easier to understand.</p>
+        </div>
+      </div>
+      <div class="col-lg-7">
+        <span class="text-uppercase fw-bold small" style="letter-spacing: .12em; color: #667eea;">A more connected view</span>
+        <h2 class="display-6 fw-bold mt-2">One place for the habits that shape your future.</h2>
+        <p class="text-muted mt-3" style="font-size: 1.08rem; line-height: 1.8;">Money, learning, and health affect one another. Instead of treating them as separate checklists, Visual Risk helps you see their shared story and explore practical next steps.</p>
+        <div class="row g-3 mt-2">
+          <div class="col-sm-4"><div class="fw-bold fs-4" style="color:#667eea;">Finance</div><small class="text-muted">Understand your money flow.</small></div>
+          <div class="col-sm-4"><div class="fw-bold fs-4" style="color:#f06a91;">Learning</div><small class="text-muted">Build focused study routines.</small></div>
+          <div class="col-sm-4"><div class="fw-bold fs-4" style="color:#36a7da;">Wellbeing</div><small class="text-muted">Keep health goals visible.</small></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="py-5 bg-light">
+  <div class="container">
+    <div class="text-center mb-5">
+      <span class="text-uppercase fw-bold small" style="letter-spacing: .12em; color: #667eea;">What guides us</span>
+      <h2 class="display-6 fw-bold mt-2">Designed to support progress, not pressure.</h2>
+      <p class="text-muted mx-auto" style="max-width: 640px;">The platform is built around useful insight, understandable data, and a supportive experience.</p>
+    </div>
+    <div class="row g-4">
+      <div class="col-md-6 col-lg-3"><div class="card value-card h-100 p-4"><span class="value-icon icon-purple"><i class="fas fa-eye"></i></span><h3 class="h5 fw-bold mt-4">Clarity</h3><p class="text-muted mb-0">Turn scattered activity into an understandable personal overview.</p></div></div>
+      <div class="col-md-6 col-lg-3"><div class="card value-card h-100 p-4"><span class="value-icon icon-pink"><i class="fas fa-user-check"></i></span><h3 class="h5 fw-bold mt-4">Personal</h3><p class="text-muted mb-0">Keep your goals, routines, and decisions at the centre of every insight.</p></div></div>
+      <div class="col-md-6 col-lg-3"><div class="card value-card h-100 p-4"><span class="value-icon icon-blue"><i class="fas fa-chart-line"></i></span><h3 class="h5 fw-bold mt-4">Practical</h3><p class="text-muted mb-0">Use simple forecasts and scenarios to plan the next useful move.</p></div></div>
+      <div class="col-md-6 col-lg-3"><div class="card value-card h-100 p-4"><span class="value-icon icon-green"><i class="fas fa-seedling"></i></span><h3 class="h5 fw-bold mt-4">Growth-minded</h3><p class="text-muted mb-0">Celebrate steady improvement across every area of your life.</p></div></div>
+    </div>
+  </div>
+</section>
+
+<section class="py-5">
+  <div class="container py-lg-3">
+    <div class="row justify-content-center">
+      <div class="col-lg-9 text-center">
+        <span class="text-uppercase fw-bold small" style="letter-spacing: .12em; color: #667eea;">Your journey</span>
+        <h2 class="display-6 fw-bold mt-2 mb-5">From daily inputs to useful direction.</h2>
+      </div>
+    </div>
+    <div class="row g-4">
+      <div class="col-md-4"><div class="journey-card card h-100 p-4"><span class="journey-number">1</span><h3 class="h5 fw-bold mt-4">Record what matters</h3><p class="text-muted mb-0">Add the small actions that matter: a transaction, a study session, or a workout.</p></div></div>
+      <div class="col-md-4"><div class="journey-card card h-100 p-4"><span class="journey-number">2</span><h3 class="h5 fw-bold mt-4">See the pattern</h3><p class="text-muted mb-0">Bring your activity together in a dashboard that makes progress and gaps visible.</p></div></div>
+      <div class="col-md-4"><div class="journey-card card h-100 p-4"><span class="journey-number">3</span><h3 class="h5 fw-bold mt-4">Choose your next step</h3><p class="text-muted mb-0">Use simulations and guidance to make your next decision with more confidence.</p></div></div>
+    </div>
+  </div>
+</section>
+
+<section class="container pb-5">
+  <div class="cta-panel text-center p-4 p-md-5">
+    <h2 class="fw-bold">Ready to make tomorrow a little clearer?</h2>
+    <p class="mb-4 opacity-75">Create your profile and start building a more informed routine today.</p>
+    {% if current_user.is_authenticated %}
+      <a class="btn btn-about" href="{{ url_for('user_dashboard') }}">Go to your dashboard <i class="fas fa-arrow-right ms-1"></i></a>
+    {% else %}
+      <a class="btn btn-about" href="{{ url_for('register') }}">Create your free account <i class="fas fa-arrow-right ms-1"></i></a>
+    {% endif %}
+  </div>
+</section>
+{% endblock %}

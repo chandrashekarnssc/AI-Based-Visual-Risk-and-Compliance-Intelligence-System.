@@ -1,0 +1,201 @@
+{% extends "base.html" %}
+
+{% block extra_css %}
+<style>
+    .fitness-wrapper { min-height:75vh; padding:1rem; border-radius:20px; background:linear-gradient(145deg,#f0f4ff,#f8f2ff); }
+    .fitness-heading { color:#2d3748; }
+    .fitness-metric { height:100%; padding:1rem 1.1rem; border-radius:16px; color:#fff!important; transition:transform .2s ease,box-shadow .2s ease; }
+    .fitness-metric:hover { transform:translateY(-3px); box-shadow:0 10px 26px rgba(45,55,72,.15); }
+    .fitness-metric h2 { margin:.1rem 0; font-size:1.75rem; font-weight:700; }
+    .fitness-metric h2,.fitness-metric h5,.fitness-metric small { color:inherit!important; }
+    .fitness-metric h5 { margin:0; font-size:.85rem; font-weight:500; opacity:.9; }
+    .fitness-metric small { font-size:.75rem; opacity:.85; }
+    .fitness-metric-icon { font-size:1.6rem; opacity:.7; }
+    .fitness-card { height:100%; overflow:hidden; border:0; border-radius:16px; box-shadow:0 4px 14px rgba(45,55,72,.07); }
+    .fitness-card-header { padding:.85rem 1rem; border-bottom:1px solid var(--border-color); font-size:.92rem; font-weight:650; }
+    .fitness-card .form-control { border-radius:10px; }
+    .fitness-submit { width:100%; border:0; border-radius:30px; padding:.65rem 1rem; color:#fff; font-weight:600; background:linear-gradient(120deg,#36a3e8,#08c8d7); }
+    .fitness-submit:hover { color:#fff; filter:brightness(.95); }
+    .fitness-chart { position:relative; height:220px; }
+    .fitness-table-scroll { max-height:350px; overflow:auto; }
+    .fitness-table { margin:0; white-space:nowrap; }
+    .fitness-table th { position:sticky; top:0; z-index:1; color:#718096; background:var(--bg-card); font-size:.72rem; text-transform:uppercase; letter-spacing:.3px; }
+    .fitness-table td { vertical-align:middle; font-size:.84rem; }
+    .fitness-actions form { display:inline-block; }
+    .fitness-empty { color:#718096; }
+    .weekly-goal-progress { height:10px; background:var(--progress-bg); }
+    @media (max-width:575.98px) {
+        .fitness-wrapper { padding:.7rem; }
+        .fitness-metric { padding:.85rem; }
+        .fitness-metric h2 { font-size:1.4rem; }
+        .fitness-heading { font-size:1.25rem; }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<main class="fitness-wrapper container-fluid">
+    <div class="d-flex flex-wrap justify-content-between align-items-center gap-2 mb-3">
+        <h3 class="fitness-heading fw-bold mb-0"><i class="fas fa-running text-danger me-2"></i>Fitness Activity</h3>
+        <span class="small text-muted">Last updated: {{ updated_at.strftime('%d %b, %I:%M %p') }}</span>
+    </div>
+
+    <section class="row g-3 mb-3" aria-label="Fitness summary">
+        <div class="col-6 col-xl-3"><div class="fitness-metric" style="background:linear-gradient(120deg,#36a3e8,#08c8d7)">
+            <div class="d-flex justify-content-between"><div><h5>Total Activity</h5><h2>{{ total_minutes }} min</h2><small>All time</small></div><i class="fas fa-clock fitness-metric-icon mt-1" aria-hidden="true"></i></div>
+        </div></div>
+        <div class="col-6 col-xl-3"><div class="fitness-metric" style="background:linear-gradient(120deg,#e879d4,#f5576c)">
+            <div class="d-flex justify-content-between"><div><h5>Calories Burned</h5><h2>{{ total_calories }}</h2><small>Total kcal</small></div><i class="fas fa-fire fitness-metric-icon mt-1" aria-hidden="true"></i></div>
+        </div></div>
+        <div class="col-6 col-xl-3"><div class="fitness-metric" style="background:linear-gradient(120deg,#38d996,#25d9d0)">
+            <div class="d-flex justify-content-between"><div><h5>Daily Average</h5><h2>{{ '%.1f'|format(daily_average) }} min</h2><small>Per active day</small></div><i class="fas fa-chart-line fitness-metric-icon mt-1" aria-hidden="true"></i></div>
+        </div></div>
+        <div class="col-6 col-xl-3"><div class="fitness-metric" style="background:linear-gradient(120deg,#ed64a6,#d53f8c)">
+            <div class="d-flex justify-content-between"><div><h5>Streak</h5><h2>{{ fitness_streak }} {{ 'day' if fitness_streak == 1 else 'days' }}</h2><small>Consecutive days</small></div><i class="fas fa-heartbeat fitness-metric-icon mt-1" aria-hidden="true"></i></div>
+        </div></div>
+    </section>
+
+    <div class="row g-3">
+        <section class="col-lg-4" aria-label="Log fitness activity">
+            <div class="card fitness-card mb-3">
+                <div class="fitness-card-header"><i class="fas fa-plus-circle text-danger me-1"></i>Log Activity</div>
+                <div class="card-body">
+                    <form method="post" action="{{ url_for('add_fitness_log') }}">
+                        <div class="mb-3"><label for="fitness-date" class="form-label small fw-bold">Date</label>
+                            <input id="fitness-date" type="date" name="date" class="form-control" value="{{ today }}" required></div>
+                        <div class="mb-3"><label for="fitness-activity" class="form-label small fw-bold">Activity</label>
+                            <input id="fitness-activity" type="text" name="activity" maxlength="50" class="form-control" list="activity-options" placeholder="e.g., Walking" required>
+                            <datalist id="activity-options"><option value="Walking"><option value="Running"><option value="Cycling"><option value="Swimming"><option value="Strength training"><option value="Yoga"><option value="Other"></datalist></div>
+                        <div class="mb-3"><label for="fitness-duration" class="form-label small fw-bold">Duration (min)</label>
+                            <input id="fitness-duration" type="number" name="duration_min" min="1" max="1440" step="1" class="form-control" placeholder="e.g., 30" required></div>
+                        <div class="mb-3"><label for="fitness-calories" class="form-label small fw-bold">Calories Burned</label>
+                            <input id="fitness-calories" type="number" name="calories_burned" min="0" max="10000" step="1" class="form-control" placeholder="e.g., 250" value="0" required></div>
+                        <button type="submit" class="fitness-submit"><i class="fas fa-save me-1"></i>Log Activity</button>
+                    </form>
+                </div>
+            </div>
+            <div class="card fitness-card">
+                <div class="fitness-card-header"><i class="fas fa-flag-checkered text-success me-1"></i>Weekly Goal</div>
+                <div class="card-body">
+                    {% set goal_minutes = 150 %}
+                    {% set goal_percent = [weekly_minutes / goal_minutes * 100, 100]|min %}
+                    <div class="d-flex justify-content-between align-items-center mb-2"><span class="fw-semibold">150 minutes this week</span><span class="small text-muted">{{ weekly_minutes }} / 150 min</span></div>
+                    <div class="progress weekly-goal-progress" role="progressbar" aria-label="Weekly activity goal" aria-valuenow="{{ goal_percent|round|int }}" aria-valuemin="0" aria-valuemax="100"><div class="progress-bar" style="width:{{ goal_percent }}%"></div></div>
+                    <p class="small text-muted mt-3 mb-0">{% if weekly_minutes >= goal_minutes %}Great work — you’ve reached this week’s activity goal.{% else %}{{ goal_minutes - weekly_minutes }} more minutes to reach your weekly goal.{% endif %}</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="col-lg-8" aria-label="Fitness analytics">
+            <div class="row g-3 mb-3">
+                <div class="col-md-8"><div class="card fitness-card">
+                    <div class="fitness-card-header"><i class="fas fa-calendar-day text-primary me-1"></i>Daily Activity (last 14 days)</div>
+                    <div class="card-body"><div class="fitness-chart"><canvas id="dailyActivityChart" aria-label="Activity minutes over the last 14 days"></canvas></div></div>
+                </div></div>
+                <div class="col-md-4"><div class="card fitness-card">
+                    <div class="fitness-card-header"><i class="fas fa-chart-pie text-warning me-1"></i>Activity Breakdown</div>
+                    <div class="card-body">{% if activities %}
+                        <div class="fitness-chart"><canvas id="activityBreakdownChart" aria-label="Activity minutes by activity type"></canvas></div>
+                        {% else %}<div class="fitness-empty text-center py-5"><i class="fas fa-heartbeat fa-2x mb-2 d-block"></i>Log an activity to see your breakdown.</div>{% endif %}
+                    </div>
+                </div></div>
+            </div>
+            <div class="card fitness-card">
+                <div class="fitness-card-header d-flex justify-content-between align-items-center">
+                    <span><i class="fas fa-list text-primary me-1"></i>Recent Activity</span>
+                    <span class="badge bg-light text-dark">{{ logs|length }} {{ 'entry' if logs|length == 1 else 'entries' }}</span>
+                </div>
+                <div class="fitness-table-scroll"><table class="table table-hover fitness-table">
+                    <thead><tr><th>Date</th><th>Activity</th><th class="text-end">Duration</th><th class="text-end">Calories</th><th class="text-center">Actions</th></tr></thead>
+                    <tbody>{% for log in logs %}
+                        <tr>
+                            <td>{{ log.date.strftime('%d-%m-%Y') }}</td><td><span class="badge rounded-pill">{{ log.activity }}</span></td>
+                            <td class="text-end">{{ log.duration_min }} min</td><td class="text-end">{{ log.calories_burned or 0 }} kcal</td>
+                            <td class="text-center fitness-actions">
+                                <button type="button" class="btn btn-sm btn-outline-primary me-1" data-bs-toggle="modal" data-bs-target="#editFitnessModal"
+                                        data-id="{{ log.id }}" data-date="{{ log.date.isoformat() }}" data-activity="{{ log.activity }}"
+                                        data-duration="{{ log.duration_min }}" data-calories="{{ log.calories_burned or 0 }}"
+                                        aria-label="Edit {{ log.activity }} activity"><i class="fas fa-edit" aria-hidden="true"></i></button>
+                                <form method="post" action="{{ url_for('delete_fitness_log', fitness_log_id=log.id) }}" onsubmit="return confirm('Permanently delete this fitness activity?');">
+                                    <button type="submit" class="btn btn-sm btn-outline-danger" aria-label="Delete {{ log.activity }} activity"><i class="fas fa-trash-alt" aria-hidden="true"></i></button>
+                                </form>
+                            </td>
+                        </tr>
+                    {% else %}<tr><td colspan="5" class="text-center text-muted py-4">No activities recorded yet. Add your first activity using the form.</td></tr>{% endfor %}</tbody>
+                </table></div>
+            </div>
+        </section>
+    </div>
+</main>
+
+<div class="modal fade" id="editFitnessModal" tabindex="-1" aria-labelledby="editFitnessModalLabel" aria-hidden="true">
+    <div class="modal-dialog"><div class="modal-content"><form method="post" action="{{ url_for('edit_fitness_log') }}">
+        <input type="hidden" name="id" id="edit-fitness-id">
+        <div class="modal-header"><h5 class="modal-title" id="editFitnessModalLabel"><i class="fas fa-edit text-primary me-2"></i>Edit Fitness Activity</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button></div>
+        <div class="modal-body">
+            <div class="mb-3"><label for="edit-fitness-date" class="form-label fw-bold">Date</label><input id="edit-fitness-date" type="date" name="date" class="form-control" required></div>
+            <div class="mb-3"><label for="edit-fitness-activity" class="form-label fw-bold">Activity</label><input id="edit-fitness-activity" type="text" name="activity" maxlength="50" class="form-control" required></div>
+            <div class="mb-3"><label for="edit-fitness-duration" class="form-label fw-bold">Duration (min)</label><input id="edit-fitness-duration" type="number" name="duration_min" min="1" max="1440" step="1" class="form-control" required></div>
+            <div class="mb-3"><label for="edit-fitness-calories" class="form-label fw-bold">Calories Burned</label><input id="edit-fitness-calories" type="number" name="calories_burned" min="0" max="10000" step="1" class="form-control" required></div>
+        </div>
+        <div class="modal-footer"><button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button><button type="submit" class="fitness-submit w-auto"><i class="fas fa-save me-1"></i>Save Changes</button></div>
+    </form></div></div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    const fitnessLabels = {{ chart_labels|tojson }};
+    const activityMinutes = {{ chart_minutes|tojson }};
+    const chartGrid = 'rgba(148, 163, 184, 0.2)';
+
+    new Chart(document.getElementById('dailyActivityChart'), {
+        type: 'bar',
+        data: { labels: fitnessLabels, datasets: [{
+            label: 'Activity minutes',
+            data: activityMinutes,
+            backgroundColor: 'rgba(54,163,232,0.55)',
+            borderColor: '#36a3e8',
+            borderWidth: 1,
+            borderRadius: 5
+        }] },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: { legend: { display: false } },
+            scales: {
+                y: { beginAtZero: true, grid: { color: chartGrid } },
+                x: { grid: { display: false }, ticks: { maxRotation: 0, autoSkip: true, maxTicksLimit: 7 } }
+            }
+        }
+    });
+
+    {% if activities %}
+    new Chart(document.getElementById('activityBreakdownChart'), {
+        type: 'doughnut',
+        data: { labels: {{ activities|tojson }}, datasets: [{
+            data: {{ activity_minutes|tojson }},
+            backgroundColor: ['#36a3e8', '#38c99a', '#f6ad55', '#ed64a6', '#9f7aea', '#f56565', '#4fd1c5'],
+            borderWidth: 2,
+            borderColor: '#fff'
+        }] },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            cutout: '62%',
+            plugins: { legend: { position: 'bottom', labels: { boxWidth: 10, padding: 8 } } }
+        }
+    });
+    {% endif %}
+
+    document.getElementById('editFitnessModal').addEventListener('show.bs.modal', function(event) {
+        const button = event.relatedTarget;
+        document.getElementById('edit-fitness-id').value = button.dataset.id;
+        document.getElementById('edit-fitness-date').value = button.dataset.date;
+        document.getElementById('edit-fitness-activity').value = button.dataset.activity;
+        document.getElementById('edit-fitness-duration').value = button.dataset.duration;
+        document.getElementById('edit-fitness-calories').value = button.dataset.calories;
+    });
+</script>
+{% endblock %}
